@@ -433,8 +433,12 @@ const Metadata: React.FC = () => {
     }
 
     // For these fields, the value needs to be inside an array
-    if (field && !Array.isArray(value) && (field.id === "creator" || field.id === "contributor")) {
-      returnValue = [returnValue];
+    if (field && !Array.isArray(value) && (field.type === "mixed_text")) {
+      if (value) {
+        returnValue = [returnValue];
+      } else {
+        returnValue = [];
+      }
     }
 
     // For these fields, the value needs to be inside an array
