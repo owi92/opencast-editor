@@ -100,13 +100,13 @@ jobs:
 
       - name: Clone upstream repository
         run: |
-          git clone -b ${{ needs.build.outputs.branch }} "git@github.com:${{ github.repository_owner }}/opencast.git" ~/opencast
-          cd ~/opencast
+          git clone -b ${{ needs.build.outputs.branch }} "git@github.com:${{ github.repository_owner }}/opencast.git" opencast
+          cd opencast
           git checkout -b t/editor-${{ needs.build.outputs.tag }}
 
       - name: Update the editor pom file
+        working-directory: opencast
         run: |
-          cd ~/opencast
           sed -i "s#<editor.sha256>.*</editor.sha256>#<editor.sha256>${{ needs.build.outputs.checksum }}</editor.sha256>#" modules/editor/pom.xml
           sed -i "s#<editor.url>.*</editor.url>#<editor.url>https://github.com/${{ github.repository_owner }}/opencast-editor/releases/download/${{ needs.build.outputs.tag }}/oc-editor-${{ needs.build.outputs.tag }}.tar.gz</editor.url>#" modules/editor/pom.xml
           git add modules/editor/pom.xml
