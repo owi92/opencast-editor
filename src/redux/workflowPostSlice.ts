@@ -23,7 +23,7 @@ export const postVideoInformation =
         subtitles: argument.subtitles,
         workflows: argument.workflow,
         metadataJSON: JSON.stringify(argument.metadata),
-      }
+      },
     );
     return response;
   });

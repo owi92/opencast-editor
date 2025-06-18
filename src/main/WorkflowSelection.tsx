@@ -1,22 +1,23 @@
 import React, { useEffect } from "react";
 
 import { css } from "@emotion/react";
-import { backOrContinueStyle, errorBoxStyle } from "../cssStyles";
+import { backOrContinueStyle } from "../cssStyles";
 
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import { selectWorkflows, setSelectedWorkflowIndex } from "../redux/videoSlice";
 
 import { PageButton } from "./Finish";
-import { LuChevronLeft, LuDatabase } from "react-icons/lu";
+import { LuChevronLeft } from "react-icons/lu";
 import { selectStatus as saveSelectStatus, selectError as saveSelectError } from "../redux/workflowPostSlice";
 import { httpRequestState, Workflow } from "../types";
 import { SaveButton } from "./Save";
-import { EmotionJSX } from "@emotion/react/types/jsx-namespace";
+import { EmotionJSX } from "@emotion/react/dist/declarations/src/jsx-namespace";
 
 import { useTranslation } from "react-i18next";
 import { Trans } from "react-i18next";
 import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useTheme } from "../themes";
+import { ErrorBox } from "@opencast/appkit";
 
 /**
  * Allows the user to select a workflow
@@ -33,8 +34,6 @@ const WorkflowSelection: React.FC = () => {
   workflows = [...workflows].sort((a, b) => {
     return (b.displayOrder - a.displayOrder);
   });
-
-  const theme = useTheme();
 
   const saveStatus = useAppSelector(saveSelectStatus);
   const saveError = useAppSelector(saveSelectError);
@@ -97,12 +96,14 @@ const WorkflowSelection: React.FC = () => {
           {/* <PageButton pageNumber={2} label="Continue" iconName={faChevronRight}/> */}
           {nextButton}
         </div>
-        <div css={errorBoxStyle(errorStatus === "failed", theme)} role="alert">
-          <span>{t("various.error-text")}</span><br />
-          {errorMessage ?
-            t("various.error-details-text", { errorMessage: saveError }) :
-            t("various.error-text")}<br />
-        </div>
+        {errorStatus === "failed" &&
+          <ErrorBox>
+            <span>{t("various.error-text")}</span><br />
+            {errorMessage ?
+              t("various.error-details-text", { errorMessage: saveError }) :
+              t("various.error-text")}<br />
+          </ErrorBox>
+        }
       </div>
     );
   };
@@ -120,7 +121,7 @@ const WorkflowSelection: React.FC = () => {
           false,
           <SaveButton />,
           saveStatus,
-          saveError
+          saveError,
         )
       );
     } else if (workflows.length === 1) {
@@ -134,12 +135,11 @@ const WorkflowSelection: React.FC = () => {
           </Trans>,
           false,
           <SaveButton
-            basicIcon={LuDatabase}
             isTransitionToEnd={true}
             text={t("workflowSelection.startProcessing-button")}
           />,
           saveStatus,
-          saveError
+          saveError,
         )
       );
     } else {
@@ -151,12 +151,11 @@ const WorkflowSelection: React.FC = () => {
           </div>,
           true,
           <SaveButton
-            basicIcon={LuDatabase}
             isTransitionToEnd={true}
             text={t("workflowSelection.startProcessing-button")}
           />,
           saveStatus,
-          saveError
+          saveError,
         )
       );
     }

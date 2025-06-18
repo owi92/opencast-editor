@@ -17,7 +17,6 @@ import {
   mergeRight,
   selectIsCurrentSegmentAlive,
   selectTimelineZoom,
-  selectTimelineZoomMax,
   setTimelineZoom,
   timelineZoomIn,
   timelineZoomOut,
@@ -50,10 +49,10 @@ const CuttingActions: React.FC = () => {
    */
   const dispatchAction = (
     action: ActionCreatorWithoutPayload<string> | undefined,
-    actionWithPayload?: ActionCreatorWithPayload<number, string> | undefined,
+    actionWithPayload?: ActionCreatorWithPayload<number, string>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     payload?: any,
-    ref?: React.RefObject<HTMLButtonElement>
+    ref?: React.RefObject<HTMLButtonElement>,
   ) => {
     if (action) {
       dispatch(action());
@@ -73,37 +72,37 @@ const CuttingActions: React.FC = () => {
     KEYMAP.cutting.cut.key,
     () => dispatchAction(cut),
     { preventDefault: true },
-    [cut]
+    [cut],
   );
   useHotkeys(
     KEYMAP.cutting.delete.key,
     () => dispatchAction(markAsDeletedOrAlive),
     { preventDefault: true },
-    [markAsDeletedOrAlive]
+    [markAsDeletedOrAlive],
   );
   useHotkeys(
     KEYMAP.cutting.mergeLeft.key,
     () => dispatchAction(mergeLeft),
     { preventDefault: true },
-    [mergeLeft]
+    [mergeLeft],
   );
   useHotkeys(
     KEYMAP.cutting.mergeRight.key,
     () => dispatchAction(mergeRight),
     { preventDefault: true },
-    [mergeRight]
+    [mergeRight],
   );
   useHotkeys(
     KEYMAP.cutting.zoomIn.key,
     () => dispatchAction(timelineZoomIn),
     { preventDefault: true, combinationKey: KEYMAP.cutting.zoomIn.combinationKey },
-    [timelineZoomIn]
+    [timelineZoomIn],
   );
   useHotkeys(
     KEYMAP.cutting.zoomOut.key,
     () => dispatchAction(timelineZoomOut, undefined),
     { preventDefault: true },
-    [timelineZoomOut]
+    [timelineZoomOut],
   );
 
   const cuttingStyle = css({
@@ -313,7 +312,6 @@ const ZoomSlider : React.FC<ZoomSliderInterface> = ({
   const { t } = useTranslation();
   const theme = useTheme();
   const timelineZoom = useAppSelector(selectTimelineZoom);
-  const timelineZoomMax = useAppSelector(selectTimelineZoomMax);
 
   // Callback for the zoom slider
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -354,9 +352,9 @@ const ZoomSlider : React.FC<ZoomSliderInterface> = ({
         <span>{t("cuttingActions.zoom")}</span>
         <Slider
           css={sliderStyle}
-          min={1}
-          max={timelineZoomMax}
-          step={0.1}
+          min={0}
+          max={1}
+          step={0.01}
           value={timelineZoom}
           onChange={zoomSliderOnChange}
           aria-label={ariaLabelText}

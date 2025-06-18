@@ -126,7 +126,7 @@ const SubtitleSelect: React.FC = () => {
           key={subtitle.id}
           title={generateButtonTitle(subtitle.tags, t)}
           icon={icon}
-        />
+        />,
       );
     }
     return buttons.sort((dat1, dat2) => dat1.props["title"].localeCompare(dat2.props["title"]));
@@ -233,7 +233,7 @@ const SubtitleAddButton: React.FC<{
     const id = values.selectedSubtitle;
     const relatedSubtitle = subtitlesForDropdown.find(tag => tag.id === id);
     const tags = relatedSubtitle ? relatedSubtitle.tags : [];
-    dispatch(setSubtitle({ identifier: id, subtitles: { cues: [], tags: tags, delete: false } }));
+    dispatch(setSubtitle({ identifier: id, subtitles: { cues: [], tags: tags, deleted: false } }));
 
     // Reset
     setIsPlusDisplay(true);

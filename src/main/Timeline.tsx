@@ -1,5 +1,5 @@
 import { debounce } from "lodash";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, RefObject } from "react";
 
 import Draggable, { DraggableEventHandler } from "react-draggable";
 
@@ -16,9 +16,10 @@ import {
   setWaveformImages,
   selectTimelineZoom,
   moveCut,
+  selectDurationInSeconds,
 } from "../redux/videoSlice";
 
-import { LuMenu, LuLoader } from "react-icons/lu";
+import { LuMenu } from "react-icons/lu";
 
 import useResizeObserver from "use-resize-observer";
 
@@ -34,7 +35,7 @@ import { ThemedTooltip } from "./Tooltip";
 import ScrollContainer from "react-indiana-drag-scroll";
 import CuttingActionsContextMenu from "./CuttingActionsContextMenu";
 import { useHotkeys } from "react-hotkeys-hook";
-import { spinningStyle } from "../cssStyles";
+import { Spinner } from "@opencast/appkit";
 
 /**
  * A container for visualizing the cutting of the video, as well as for controlling
@@ -64,11 +65,15 @@ const Timeline: React.FC<{
   const currentlyAt = useAppSelector(selectCurrentlyAt);
   const dispatch = useAppDispatch();
   const duration = useAppSelector(selectDuration);
+  const durationInSeconds = useAppSelector(selectDurationInSeconds);
   const timelineZoom = useAppSelector(selectTimelineZoom);
 
+  const scrubberRef = useRef<HTMLDivElement | null>(null);
   const { ref, width = 1 } = useResizeObserver<HTMLDivElement>();
   const scrollContainerRef = useRef<HTMLElement>(null);
+  const { width: scrollContainerWidth = 1 } = useResizeObserver<HTMLElement>({ ref: scrollContainerRef });
   const topOffset = 20;
+  const minDisplayTime = 10; // in seconds, what is shown at max zoom
 
   const currentlyScrolling = useRef(false);
   const zoomCenter = useRef(0);
@@ -87,23 +92,34 @@ const Timeline: React.FC<{
     zoomCenter.current = (scrubberVisible ? scrubberPosition : centerPosition) / width;
   };
 
-  useEffect(updateScroll, [currentlyAt, timelineZoom, width]);
+  const getDisplayPercentage = (zoomValue: number) => {
+    const displayDuration = (1 - zoomValue) * (durationInSeconds - minDisplayTime) + minDisplayTime;
+    return (durationInSeconds / displayDuration);
+  };
+  const getWaveformWidth = (baseWidth: number, zoomValue: number) => {
+    return baseWidth * getDisplayPercentage(zoomValue);
+  };
+  const displayPercentage = getDisplayPercentage(timelineZoom);
+  const zoomedWidth = getWaveformWidth(scrollContainerWidth, timelineZoom);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(updateScroll, [currentlyAt, timelineZoom, width, scrollContainerWidth]);
 
   useEffect(() => {
     if (!scrollContainerRef.current) {
       return;
     }
     const clientWidth = scrollContainerRef.current.clientWidth ?? 0;
-    const left = zoomCenter.current * timelineZoom * clientWidth - 0.5 * clientWidth;
+    const left = zoomCenter.current * displayPercentage * clientWidth - 0.5 * clientWidth;
 
     currentlyScrolling.current = true;
     scrollContainerRef.current.scrollLeft = left;
-  }, [timelineZoom]);
+  }, [displayPercentage]);
 
   const timelineStyle = css({
     position: "relative",     // Need to set position for Draggable bounds to work
     height: timelineHeight + "px",
-    width: (timelineZoom) * 100 + "%",    // Width modified by zoom
+    width: `${zoomedWidth}px`,    // Width modified by zoom
     top: `${topOffset}px`,
   });
 
@@ -129,6 +145,7 @@ const Timeline: React.FC<{
       <CuttingActionsContextMenu>
         <div ref={ref} css={timelineStyle} onMouseDown={e => setCurrentlyAtToClick(e)}>
           <Scrubber
+            ref={scrubberRef}
             timelineWidth={width}
             timelineHeight={timelineHeight}
             selectCurrentlyAt={selectCurrentlyAt}
@@ -151,25 +168,21 @@ const Timeline: React.FC<{
   );
 };
 
-/**
- * Displays and defines the current position in the video
- * @param param0
- */
-export const Scrubber: React.FC<{
+type ScrubberProps = {
   timelineWidth: number,
   timelineHeight: number,
   selectCurrentlyAt: (state: RootState) => number,
   selectIsPlaying: (state: RootState) => boolean,
   setCurrentlyAt: ActionCreatorWithPayload<number, string>,
   setIsPlaying: ActionCreatorWithPayload<boolean, string>,
-}> = ({
-  timelineWidth,
-  timelineHeight,
-  selectCurrentlyAt,
-  selectIsPlaying,
-  setCurrentlyAt,
-  setIsPlaying,
-}) => {
+}
+
+/**
+ * Displays and defines the current position in the video
+ * @param param0
+ */
+export const Scrubber = React.forwardRef<HTMLDivElement, ScrubberProps>((props, nodeRef) => {
+  const { timelineWidth, timelineHeight, selectCurrentlyAt, selectIsPlaying, setCurrentlyAt, setIsPlaying } = props;
 
   const { t } = useTranslation();
 
@@ -188,7 +201,6 @@ export const Scrubber: React.FC<{
   const [wasPlayingWhenGrabbed, setWasPlayingWhenGrabbed] = useState(false);
   const [keyboardJumpDelta, setKeyboardJumpDelta] = useState(1000);  // In milliseconds. For keyboard navigation
   const wasCurrentlyAtRef = useRef(0);
-  const nodeRef = React.useRef(null); // For supressing "ReactDOM.findDOMNode() is deprecated" warning
 
   // Reposition scrubber when the current x position was changed externally
   useEffect(() => {
@@ -250,25 +262,25 @@ export const Scrubber: React.FC<{
     KEYMAP.timeline.left.key,
     () => dispatch(setCurrentlyAt(Math.max(currentlyAt - keyboardJumpDelta, 0))),
     {},
-    [currentlyAt, keyboardJumpDelta]
+    [currentlyAt, keyboardJumpDelta],
   );
   useHotkeys(
     KEYMAP.timeline.right.key,
     () => dispatch(setCurrentlyAt(Math.min(currentlyAt + keyboardJumpDelta, duration))),
     {},
-    [currentlyAt, keyboardJumpDelta, duration]
+    [currentlyAt, keyboardJumpDelta, duration],
   );
   useHotkeys(
     KEYMAP.timeline.increase.key,
     () => setKeyboardJumpDelta(keyboardJumpDelta => Math.min(keyboardJumpDelta * 10, 1000000)),
     {},
-    [keyboardJumpDelta]
+    [keyboardJumpDelta],
   );
   useHotkeys(
     KEYMAP.timeline.decrease.key,
     () => setKeyboardJumpDelta(keyboardJumpDelta => Math.max(keyboardJumpDelta / 10, 1)),
     {},
-    [keyboardJumpDelta]
+    [keyboardJumpDelta],
   );
 
   const scrubberStyle = css({
@@ -327,7 +339,7 @@ export const Scrubber: React.FC<{
       axis="x"
       bounds="parent"
       position={controlledPosition}
-      nodeRef={nodeRef}
+      nodeRef={nodeRef as RefObject<HTMLElement>}
     >
       <div ref={nodeRef} css={scrubberStyle} className="prevent-drag-scroll">
         <div css={scrubberDragHandleStyle} aria-grabbed={isGrabbed}
@@ -347,7 +359,7 @@ export const Scrubber: React.FC<{
       </div>
     </Draggable>
   );
-};
+});
 
 /**
  * Container responsible for rendering the segments that are created when cutting
@@ -595,6 +607,7 @@ export const Waveforms: React.FC<{ timelineHeight: number; }> = ({ timelineHeigh
   const waveformStyle = css({
     background: `${theme.waveform_bg}`,
     borderRadius: "5px",
+    imageRendering: "pixelated",
   });
 
   // When the URLs to the videos are fetched, generate waveforms
@@ -664,7 +677,7 @@ export const Waveforms: React.FC<{ timelineHeight: number; }> = ({ timelineHeigh
     } else {
       return (
         <>
-          <LuLoader css={[spinningStyle, { fontSize: 40 }]} />
+          <Spinner size={40} />
           <div>{t("timeline.generateWaveform-text")}</div>
         </>
       );

@@ -61,7 +61,7 @@ export const initialState: video & httpRequestState = {
   jumpTriggered: false,
   aspectRatios: [],
   hasChanges: false,
-  timelineZoom: 1,
+  timelineZoom: 0,
   waveformImages: [],
   originalThumbnails: [],
 
@@ -195,7 +195,7 @@ const videoSlice = createSlice({
       state.hasChanges = action.payload;
     },
     setTimelineZoom: (state, action: PayloadAction<video["timelineZoom"]>) => {
-      state.timelineZoom = clamp(action.payload, 1, timelineZoomMax(state));
+      state.timelineZoom = clamp(action.payload, 0, 1);
     },
     setWaveformImages: (state, action: PayloadAction<video["waveformImages"]>) => {
       state.waveformImages = action.payload;
@@ -243,7 +243,7 @@ const videoSlice = createSlice({
     },
     moveCut: (
       state,
-      action: PayloadAction<{ leftSegmentIndex: number, time: Segment["start"] }>
+      action: PayloadAction<{ leftSegmentIndex: number, time: Segment["start"] }>,
     ) => {
       const leftSegmentIndex = action.payload.leftSegmentIndex;
       const rightSegmentIndex = action.payload.leftSegmentIndex + 1;
@@ -293,10 +293,10 @@ const videoSlice = createSlice({
       state.hasChanges = true;
     },
     timelineZoomIn: state => {
-      state.timelineZoom = clamp(state.timelineZoom + 1, 1, timelineZoomMax(state));
+      state.timelineZoom = clamp(state.timelineZoom + 0.01, 0, 1);
     },
     timelineZoomOut: state => {
-      state.timelineZoom = clamp(state.timelineZoom - 1, 1, timelineZoomMax(state));
+      state.timelineZoom = clamp(state.timelineZoom - 0.01, 0, 1);
     },
   },
   // For Async Requests
@@ -325,7 +325,6 @@ const videoSlice = createSlice({
             return track;
           });
         const videos = state.tracks.filter((track: Track) => track.video_stream.available === true);
-        // eslint-disable-next-line no-sequences
         state.videoURLs = videos.reduce((a: string[], o: { uri: string; }) => (a.push(o.uri), a), []);
         state.videoCount = state.videoURLs.length;
         state.subtitlesFromOpencast = action.payload.subtitles ?
@@ -335,8 +334,15 @@ const videoSlice = createSlice({
         state.segments = parseSegments(action.payload.segments, action.payload.duration);
         state.workflows = action.payload.workflows;
         state.waveformImages = action.payload.waveformURIs ? action.payload.waveformURIs : state.waveformImages;
+        state.waveformImages = action.payload.waveformURIs ? action.payload.waveformURIs.map((waveformURI: string) => {
+          if (action.payload.local && settings.opencast.local) {
+            console.debug("Replacing waveform image URL");
+            waveformURI = waveformURI.replace(/https?:\/\/[^/]*/g, window.location.origin);
+          }
+          return waveformURI;
+        }) : state.waveformImages;
         state.originalThumbnails = state.tracks.map(
-          (track: Track) => { return { id: track.id, uri: track.thumbnailUri }; }
+          (track: Track) => { return { id: track.id, uri: track.thumbnailUri }; },
         );
 
         state.aspectRatios = new Array(state.videoCount);
@@ -368,7 +374,6 @@ const videoSlice = createSlice({
     selectSelectedWorkflowId: state => state.selectedWorkflowId,
     selectHasChanges: state => state.hasChanges,
     selectTimelineZoom: state => state.timelineZoom,
-    selectTimelineZoomMax: timelineZoomMax,
     selectWaveformImages: state => state.waveformImages,
     selectOriginalThumbnails: state => state.originalThumbnails,
     // Selectors mainly pertaining to the information fetched from Opencast
@@ -439,7 +444,7 @@ const mergeSegments = (state: video, startSegmentIndex: number, endSegmentIndex:
   // Remove the end segment and segments between
   state.segments.splice(
     startSegmentIndex < endSegmentIndex ? startSegmentIndex + 1 : endSegmentIndex,
-    Math.abs(endSegmentIndex - startSegmentIndex)
+    Math.abs(endSegmentIndex - startSegmentIndex),
   );
 
   // Update active segment
@@ -507,14 +512,6 @@ const setThumbnailHelper = (state: video, id: Track["id"], uri: Track["thumbnail
   }
 };
 
-const ZOOM_SECONDS_VISIBLE = 20 * 1000;
-
-function timelineZoomMax(state: { duration: number }) {
-  const maxZoom = state.duration / ZOOM_SECONDS_VISIBLE;
-
-  return Math.max(2, Math.ceil(maxZoom));
-}
-
 export const {
   setTrackEnabled,
   setIsPlaying,
@@ -550,7 +547,7 @@ export const {
 
 export const selectVideos = createSelector(
   [(state: { videoState: { tracks: video["tracks"]; }; }) => state.videoState.tracks],
-  tracks => tracks.filter((track: Track) => track.video_stream.available === true)
+  tracks => tracks.filter((track: Track) => track.video_stream.available === true),
 );
 
 // Export selectors
@@ -570,7 +567,6 @@ export const {
   selectSelectedWorkflowId,
   selectHasChanges,
   selectTimelineZoom,
-  selectTimelineZoomMax,
   selectWaveformImages,
   selectOriginalThumbnails,
   selectVideoURL,

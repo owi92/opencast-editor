@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { css } from "@emotion/react";
-import { BREAKPOINTS, calendarStyle, errorBoxStyle, selectFieldStyle, titleStyle, titleStyleBold } from "../cssStyles";
+import { BREAKPOINTS, calendarStyle, selectFieldStyle, titleStyle, titleStyleBold } from "../cssStyles";
 
 import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
@@ -27,6 +27,7 @@ import { useTheme } from "../themes";
 import { ThemeProvider } from "@mui/material/styles";
 import { cloneDeep } from "lodash";
 import { ParseKeys } from "i18next";
+import { ErrorBox } from "@opencast/appkit";
 import { screenWidthAtMost } from "@opencast/appkit";
 
 /**
@@ -348,11 +349,11 @@ const Metadata: React.FC = () => {
   const submitSingleField = (value: any, fieldId: string) => {
     const catalogIndexString = fieldId.substring(
       fieldId.indexOf("g") + 1,
-      fieldId.indexOf(".")
+      fieldId.indexOf("."),
     );
     const fieldName = fieldId.substring(
       fieldId.indexOf(".") + 1,
-      fieldId.length
+      fieldId.length,
     );
     const catalogIndex = parseInt(catalogIndexString);
 
@@ -377,7 +378,7 @@ const Metadata: React.FC = () => {
   const blurWithSubmit = (
     e: React.FocusEvent<HTMLInputElement, Element> | React.FocusEvent<HTMLTextAreaElement, Element>,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    input: any
+    input: any,
   ) => {
     input.onBlur(e);
     submitSingleField(input.value, input.name);
@@ -476,15 +477,8 @@ const Metadata: React.FC = () => {
     if (field.collection) {
       // For whatever reason react-select uses "value" as their key, which is not at all confusing
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const library: [{ value: any, label: string, submitValue: any; }] =
-        [{ value: "", label: "No value", submitValue: "" }];
+      const library: { value: any, label: string, submitValue: any; }[] = [];
       Object.entries(field.collection).forEach(([key, value]) => {
-        // // Parse License
-        // let [err, result] = safeJsonParse(key)
-        // if (!err) {
-        //   console.log(result)
-        // }
-
         // Parse Label
         let descLabel = null;
         if (i18n.exists(`metadata.${field.id}`)) {
@@ -507,6 +501,8 @@ const Metadata: React.FC = () => {
           submitValue: value,
         });
       });
+      library.sort((a, b) => a.label.localeCompare(b.label));
+      library.unshift({ value: "", label: "No value", submitValue: "" });
       return library;
     } else {
       return null;
@@ -652,7 +648,7 @@ const Metadata: React.FC = () => {
           <div css={fieldStyle} data-testid={field.id}>
             <label css={fieldLabelStyle} htmlFor={input.name}>{
               i18n.exists(`metadata.labels.${field.id}`) ?
-                t(`metadata.labels.${field.id}` as ParseKeys) as string : field.id
+                t(`metadata.labels.${field.id}` as ParseKeys) : field.id
             }</label>
 
             {generateComponentWithModifiedInput(field, input)}
@@ -666,7 +662,7 @@ const Metadata: React.FC = () => {
   const renderCatalog = (
     catalog: Catalog,
     catalogIndex: number,
-    configureFields: { [key: string]: configureFieldsAttributes; }
+    configureFields: { [key: string]: configureFieldsAttributes; },
   ) => {
 
 
@@ -674,7 +670,7 @@ const Metadata: React.FC = () => {
       <div key={catalogIndex} css={catalogStyle}>
         <div css={[titleStyle(theme), titleStyleBold(theme)]}>
           {i18n.exists(`metadata.${catalog.title.replaceAll(".", "-")}`) ?
-            t(`metadata.${catalog.title.replaceAll(".", "-")}` as ParseKeys) as string : catalog.title
+            t(`metadata.${catalog.title.replaceAll(".", "-")}` as ParseKeys) : catalog.title
           }
         </div>
 
@@ -710,10 +706,16 @@ const Metadata: React.FC = () => {
             form.reset();
           }} css={metadataStyle}>
 
-            <div css={errorBoxStyle(getStatus === "failed", theme)} role="alert">
-              <span>A problem occurred during communication with Opencast.</span><br />
-              {getError ? "Details: " + getError : "No error details are available."}<br />
-            </div>
+            {getStatus === "failed" &&
+              <ErrorBox>
+                <span css={{ whiteSpace: "pre-line" }}>
+                  {"A problem occurred during communication with Opencast. \n"}
+                  {getError ?
+                    t("various.error-details-text", { errorMessage: getError }) : undefined
+                  }
+                </span>
+              </ErrorBox>
+            }
 
             {catalogs.map((catalog, i) => {
               if (settings.metadata.configureFields) {
