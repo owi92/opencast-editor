@@ -111,7 +111,7 @@ const SubtitleTimeline: React.FC = () => {
   useHotkeys(
     KEYMAP.subtitleList.addCue.key,
     () => addCue(currentlyAt),
-    {}, [currentlyAt]
+    {}, [currentlyAt],
   );
 
   // Callback for the scroll container
