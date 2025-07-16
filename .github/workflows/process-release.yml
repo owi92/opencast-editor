@@ -117,8 +117,10 @@ jobs:
           gh auth login --with-token < token.txt
           gh pr create \
             --title "Update ${{ needs.build.outputs.branch }} Editor to ${{ needs.build.outputs.tag }}" \
-            --label editor --label maintenance \
             --body "Updating Opencast ${{ needs.build.outputs.branch }} Editor module to [${{ needs.build.outputs.tag }}](https://github.com/${{ github.repository_owner }}/opencast-editor/releases/tag/${{ needs.build.outputs.tag }})" \
             --head=${{ github.repository_owner }}:t/editor-${{ needs.build.outputs.tag }} \
             --base ${{ needs.build.outputs.branch }} \
             -R ${{ github.repository_owner }}/opencast
+            #FIXME: fine grained PATs can't apply labels
+            #FIXME: classic PATs don't have the permissions because the PR isn't in an opencastproject (the user) repo
+            #--label editor --label maintenance \
