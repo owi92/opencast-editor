@@ -115,6 +115,7 @@
         "reset-button": "Réinitialiser",
         "reset-button-tooltip": "Annuler tous les changements",
         "submit-helpertext": "Faites des changements comme vous le souhaitez, puis cliquez sur le bouton {{buttonName}} .\nNotez que vous devrez quand même commencer à traiter pour que vos changements prennent effet.",
+        "required": "*",
         "validation": {
             "required": "Requis",
             "duration-format": "Le format doit être HH:MM:SS",
@@ -326,6 +327,6 @@
         "areYouSure": "Are you sure?",
         "cancel": "Cancel",
         "close": "Close",
-        "confirm": "Confirm"
+        "confirm": "Confirmer"
     }
 }

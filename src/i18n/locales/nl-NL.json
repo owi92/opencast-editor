@@ -115,6 +115,7 @@
         "reset-button": "Reset",
         "reset-button-tooltip": "Al u wijzigingen ongedaan maken",
         "submit-helpertext": "Maak wijzigingen zoals u wilt, en druk dan op de {{buttonName}} knop.\nMerk op dat u nog steeds moet beginnen met verwerken om de wijzigingen door te voeren.",
+        "required": "*",
         "validation": {
             "required": "Verplicht",
             "duration-format": "Formaat moet HH:MM:SS zijn",

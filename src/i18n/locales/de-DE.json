@@ -115,6 +115,7 @@
         "reset-button": "Zurücksetzen",
         "reset-button-tooltip": "Alle Änderungen rückgängig machen",
         "submit-helpertext": "Machen Sie so viele Änderungen, wie Sie möchten, dann drücken Sie den {{buttonName}} Button.\nBeachten Sie, dass Sie noch die Verarbeitung starten müssen, damit Ihre Änderungen wirksam werden.",
+        "required": "*",
         "validation": {
             "required": "Erforderlich",
             "duration-format": "Format muss HH:MM:SS sein",

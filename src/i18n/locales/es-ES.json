@@ -115,6 +115,7 @@
         "reset-button": "Reestablecer",
         "reset-button-tooltip": "Deshacer todos los cambios",
         "submit-helpertext": "Haz cambios a su gusto, luego pulse el botón {{buttonName}}.\nTenga en cuenta que todavía tendrá que empezar el procesamiento para que los cambios surtan efecto.",
+        "required": "*",
         "validation": {
             "required": "Requerido",
             "duration-format": "El formato debe ser HH:MM:SS",

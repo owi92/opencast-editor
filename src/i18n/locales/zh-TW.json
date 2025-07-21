@@ -115,6 +115,7 @@
         "reset-button": "重置",
         "reset-button-tooltip": "取消所有更改",
         "submit-helpertext": "根據需要進行更改，然後點擊 {{buttonName}} 按鈕。\n請注意，您仍然必須開始處理才能使更改生效。",
+        "required": "*",
         "validation": {
             "required": "必須的",
             "duration-format": "格式必須為 HH:MM:SS",
