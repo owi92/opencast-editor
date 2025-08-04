@@ -11,14 +11,14 @@
     },
     "cuttingActions": {
         "cut-button": "Tagliare",
-        "cut-tooltip": "Dividere il segmento alla posizione corrente del marcatore della linea di tempo. Scorciatoia: {{hotkeyName}}",
-        "cut-tooltip-aria": "Taglia. Dividere il segmento nella posizione corrente del marcatore della linea di tempo. Scorciatoia: {{hotkeyName}}.",
+        "cut-tooltip": "Dividere il segmento alla posizione corrente del marcatore della timeline. Scorciatoia: {{hotkeyName}}",
+        "cut-tooltip-aria": "Taglia. Dividere il segmento nella posizione corrente del marcatore della timeline. Scorciatoia: {{hotkeyName}}.",
         "delete-button": "Eliminare",
         "delete-restore-tooltip": "Seleziona o deseleziona il segmento alla posizione corrente come da eliminare. Scorciatoia: {{hotkeyName}}",
         "delete-restore-tooltip-aria": "Elimina e ripristina. Seleziona o deseleziona il segmento nella posizione corrente come da eliminare. Scorciatoia: {{hotkeyName}}.",
         "merge-all-button": "Unisci Tutto",
         "merge-all-tooltip": "Combina tutti i segmenti in un singolo segmento.",
-        "merge-all-tooltip-aria": "Unisci Tutti. Combina tutti i segmenti in un singolo segmento.",
+        "merge-all-tooltip-aria": "Unisci tutti. Combina tutti i segmenti in un singolo segmento.",
         "restore-button": "Ripristinare",
         "mergeLeft-button": "Unisci a sinistra",
         "mergeLeft-tooltip": "Combina il segmento attualmente attivo con il segmento alla sua sinistra. Scorciatoia: {{hotkeyName}}",
@@ -27,8 +27,8 @@
         "mergeRight-tooltip": "Combina il segmento attualmente attivo con il segmento alla sua destra. Scorciatoia: {{hotkeyName}}",
         "mergeRight-tooltip-aria": "Unisci a destra. Combina il segmento attualmente attivo con il segmento alla sua destra. Scorciatoia: {{hotkeyName}}.",
         "zoom": "Zoom",
-        "zoomSlider-aria": "Zoom. Ingrandisce o riduce la linea temporale. Scorciatoia per l'ingrandimento: {{hotkeyNameIn}}. Scorciatoia per lo zoom indietro: {{hotkeyNameOut}}.",
-        "zoomSlider-tooltip": "Ingrandisce o riduce la linea temporale. Scorciatoia per l'ingrandimento: {{hotkeyNameIn}}. Scorciatoia per lo zoom indietro: {{hotkeyNameOut}}.",
+        "zoomSlider-aria": "Zoom. Ingrandisce o riduce la timeline. Scorciatoia per l'ingrandimento: {{hotkeyNameIn}}. Scorciatoia per lo zoom indietro: {{hotkeyNameOut}}.",
+        "zoomSlider-tooltip": "Ingrandisce o riduce la timeline. Scorciatoia per l'ingrandimento: {{hotkeyNameIn}}. Scorciatoia per lo zoom indietro: {{hotkeyNameOut}}.",
         "zoomIn": "Ingrandisci",
         "zoomOut": "Rimpicciolisci"
     },
@@ -99,7 +99,7 @@
     "timeline": {
         "generateWaveform-text": "Generazione Waveform",
         "segment-tooltip": "Segmento {{segment}}",
-        "scrubber-text-aria": "Marcatore della linea di tempo. {{currentTime}}. Segmento attivo: {{segment}}. {{segmentStatus}}. Controlli: {{moveLeft}} e {{moveRight}} per spostare il marcatore della linea temporale. {{increase}} e {{decrease}} per aumentare/diminuire il delta della mossa.\n",
+        "scrubber-text-aria": "Marcatore della timeline. {{currentTime}}. Segmento attivo: {{segment}}. {{segmentStatus}}. Controlli: {{moveLeft}} e {{moveRight}} per spostare il marcatore della timeline. {{increase}} e {{decrease}} per aumentare/diminuire il delta della mossa.\n",
         "segments-text-aria": "Segmento {{index}}. {{segmentStatus}}. Inizio: {{start}}. Fine: {{end}}.\n",
         "cut-text-aria": "Taglia marcatore. {{time}}. Tra il segmento {{leftSegment}} e {{rightSegment}}.\n"
     },
@@ -109,7 +109,7 @@
         "confirm-button": "Sì, inizia l'elaborazione"
     },
     "metadata": {
-        "EVENTS-EVENTS-DETAILS-CATALOG-EPISODE": "Metadati di episodio",
+        "EVENTS-EVENTS-DETAILS-CATALOG-EPISODE": "Metadati dell'episodio",
         "submit-button": "Invia",
         "submit-button-tooltip": "Conferma le tue modifiche",
         "reset-button": "Reset",
@@ -181,8 +181,8 @@
         "noThumbnailAvailable": "Nessuna miniatura disponibile",
         "previewImageAlt": "Miniatura per traccia",
         "buttonGenerate": "Genera",
-        "buttonGenerate-tooltip": "Genera una nuova miniatura dalla posizione corrente dell'indicatore della linea temporale",
-        "buttonGenerate-tooltip-aria": "Genera una nuova miniatura dalla posizione corrente dell'indicatore della linea temporale",
+        "buttonGenerate-tooltip": "Genera una nuova miniatura dalla posizione corrente dell'indicatore della timeline",
+        "buttonGenerate-tooltip-aria": "Genera una nuova miniatura dalla posizione corrente dell'indicatore della timeline",
         "buttonUpload": "Carica",
         "buttonUpload-tooltip": "Carica un'immagine",
         "buttonUpload-tooltip-aria": "Carica un'immagine",
@@ -193,8 +193,8 @@
         "buttonDiscard-tooltip": "Scarta la miniatura per questa traccia",
         "buttonDiscard-tooltip-aria": "Scarta la miniatura per questa traccia",
         "buttonGenerateAll": "Genera tutte",
-        "buttonGenerateAll-tooltip": "Genera nuove miniature per tutte le tracce dalla posizione corrente degli indicatori della linea temporale",
-        "buttonGenerateAll-tooltip-aria": "Genera nuove miniature per tutte le tracce dalla posizione corrente degli indicatori della linea temporale",
+        "buttonGenerateAll-tooltip": "Genera nuove miniature per tutte le tracce dalla posizione corrente degli indicatori della timeline",
+        "buttonGenerateAll-tooltip-aria": "Genera nuove miniature per tutte le tracce dalla posizione corrente degli indicatori della timeline",
         "explanation": "Carica o genera una miniatura per ogni traccia.",
         "primary": "Primario",
         "secondary": "Secondario"
