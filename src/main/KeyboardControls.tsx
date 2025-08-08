@@ -131,9 +131,9 @@ const KeyboardControls: React.FC = () => {
         const entries: { [groupName: string]: string[][]; } = {};
         Object.entries(group).forEach(([, action]) => {
           const sequences = action.key.split(",").map(item => item.trim());
-          const sequenceCombinationkey = action.combinationKey ? action.combinationKey : "+";
+          const sequenceSplitKey = action.splitKey ? action.splitKey : "+";
           entries[action.name] = Object.entries(sequences).map(([, sequence]) => {
-            return sequence.split(sequenceCombinationkey).map(item => rewriteKeys(item.trim()));
+            return sequence.split(sequenceSplitKey).map(item => rewriteKeys(item.trim()));
           });
         });
         groups.push(<Group name={getGroupName(groupName)} entries={entries} key={index}/>);

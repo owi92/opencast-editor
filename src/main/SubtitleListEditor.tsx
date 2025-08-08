@@ -369,7 +369,7 @@ const SubtitleListSegment = React.memo((props: subtitleListSegmentProps) => {
   });
 
   return (
-    <div ref={hotkeyRef} tabIndex={-1} css={[segmentStyle, {
+    <div ref={hotkeyRef as React.Ref<HTMLDivElement>} tabIndex={-1} css={[segmentStyle, {
       ...props.style,
       // Used for padding in the VariableSizeList
       top: props.style.top !== undefined ?
