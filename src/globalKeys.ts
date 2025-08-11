@@ -22,8 +22,8 @@ const groupSubtitleList = "keyboardControls.groupSubtitleList";
  */
 export const rewriteKeys = (key: string | IKey) => {
   const newKey = typeof key === "string" ?
-    key : key.combinationKey ?
-      key.key.replaceAll(key.combinationKey, "+") : key.key;
+    key : key.splitKey ?
+      key.key.replaceAll(key.splitKey, "+") : key.key;
 
   return isMacOs ? newKey.replace("Alt", "Option") : newKey;
 };
@@ -48,7 +48,7 @@ export interface IKeyGroup {
 export interface IKey {
   name: string;
   key: string;
-  combinationKey?: string;
+  splitKey?: string;
 }
 
 export const KEYMAP: IKeyMap = {
@@ -90,7 +90,7 @@ export const KEYMAP: IKeyMap = {
     zoomIn: {
       name: "cuttingActions.zoomIn",
       key: "Shift;Alt;z, +",
-      combinationKey: ";",
+      splitKey: ";",
     },
     zoomOut: {
       name: "cuttingActions.zoomOut",
