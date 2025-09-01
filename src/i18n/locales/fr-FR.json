@@ -288,7 +288,8 @@
         "addSegmentBelow": "Ajouter un segment ci-dessous",
         "jumpToSegmentAbove": "Aller au segment ci-dessus",
         "jumpToSegmentBelow": "Aller au segment ci-dessous",
-        "deleteSegment": "Supprimer le segment"
+        "deleteSegment": "Supprimer le segment",
+        "addCue": "Add segment at current time"
     },
     "subtitleVideoArea": {
         "selectVideoLabel": "Saveurs de la vidéo"

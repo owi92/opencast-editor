@@ -288,7 +288,8 @@
         "addSegmentBelow": "Προσθήκη τμήματος κάτω",
         "jumpToSegmentAbove": "Μετάβαση στο τμήμα πάνω",
         "jumpToSegmentBelow": "Μετάβαση στο τμήμα κάτω",
-        "deleteSegment": "Διαγραφή τμήματος"
+        "deleteSegment": "Διαγραφή τμήματος",
+        "addCue": "Add segment at current time"
     },
     "subtitleVideoArea": {
         "selectVideoLabel": "Τύποι Βίντεο"

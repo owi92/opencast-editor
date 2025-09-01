@@ -288,7 +288,8 @@
         "addSegmentBelow": "Aggiungi segmento sotto",
         "jumpToSegmentAbove": "Vai al segmento sopra",
         "jumpToSegmentBelow": "Vai al segmento sotto",
-        "deleteSegment": "Cancella segmento"
+        "deleteSegment": "Cancella segmento",
+        "addCue": "Add segment at current time"
     },
     "subtitleVideoArea": {
         "selectVideoLabel": "Video Flavors"
