@@ -231,24 +231,7 @@
         "cannotDeleteTrackText": "Impossibile eliminare la traccia",
         "deleteTrackTooltip": "Non codificare e pubblicare questa traccia.",
         "restoreTrackTooltip": "Codifica e pubblica questa traccia.",
-        "cannotDeleteTrackTooltip": "Impossibile rimuovere questa traccia dalla pubblicazione.",
-        "noSelectionPossible": "La selezione della traccia è disabilitata per questo video, perché sono necessarie almeno due tracce per deselezionarne una.",
-        "help": "Almeno una traccia deve essere selezionata.",
-        "helpAtLeastOneVideo": "Almeno una traccia video deve essere selezionata.",
-        "atMostTwoVideos": "La selezione traccia è disabilitata per eventi con più di due video",
-        "customizeLabel": "Personalizza selezione traccia",
-        "videoTracksHeader": "Tracce video",
-        "audioTracksHeader": "Tracce audio",
-        "confirmText": "Conferma selezione",
-        "confirmTooltip": "Conferma tracce selezionate",
-        "noAudioAvailable": "Nessun audio disponibile",
-        "selectionAlertInfoVideo_zero": "Non hai selezionato nessuna traccia video.",
-        "selectionAlertInfoVideo_one": "Hai selezionato 1 traccia video.",
-        "selectionAlertInfoVideo_other": "Hai selezionato {{count}} tracce video.",
-        "selectionAlertInfoAudio_zero": "Non hai selezionato nessuna traccia audio.",
-        "selectionAlertInfoAudio_one": "Hai selezionato 1 traccia audio. Sarà duplicata in tutti i video.",
-        "selectionAlertInfoAudio_other": "Hai selezionato {{count}} tracce audio.",
-        "selectionAlertError": "Almeno una traccia video o audio deve essere selezionata."
+        "cannotDeleteTrackTooltip": "Impossibile rimuovere questa traccia dalla pubblicazione."
     },
     "subtitles": {
         "selectSubtitleButton-tooltip": "Modifica sottotitoli per {{title}}",
@@ -289,7 +272,7 @@
         "jumpToSegmentAbove": "Vai al segmento sopra",
         "jumpToSegmentBelow": "Vai al segmento sotto",
         "deleteSegment": "Cancella segmento",
-        "addCue": "Add segment at current time"
+        "addCue": "Aggiungi segmento all'ora corrente"
     },
     "subtitleVideoArea": {
         "selectVideoLabel": "Video Flavors"
