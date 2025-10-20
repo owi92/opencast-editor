@@ -18,7 +18,7 @@ jobs:
       branch: ${{ steps.branch-name.outputs.branch }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Determine the correct test server
         id: test-server
@@ -37,7 +37,7 @@ jobs:
     needs: detect
     steps:
       - name: Checkout sources
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Use Node.js
         uses: actions/setup-node@v4
