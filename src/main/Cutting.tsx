@@ -99,7 +99,7 @@ const Cutting: React.FC = () => {
   return (
     <div css={cuttingStyle}>
       <CuttingHeader />
-      <VideoPlayers refs={undefined} />
+      <VideoPlayers maxHeightInPixel={500} />
       <div css={videosStyle(theme)}>
         <Timeline
           timelineHeight={260}
