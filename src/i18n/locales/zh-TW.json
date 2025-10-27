@@ -53,6 +53,7 @@
         "comError-text": "與 Opencast 通訊時出現問題。",
         "loadError-text": "載入此影片時出現錯誤。",
         "durationError-text": "Opencast failed to provide the video duration.",
+        "noVideoError-text": "The editor does not support audio files yet!",
         "title-tooltip": "影片標題",
         "presenter-tooltip": "影片簡報者"
     },
@@ -232,7 +233,6 @@
         "deleteTrackTooltip": "Do not encode and publish this track.",
         "restoreTrackTooltip": "Encode and publish this track.",
         "cannotDeleteTrackTooltip": "Cannot remove this track from publication.",
-        "noSelectionPossible": "Track selection is disabled for this video, because at least two tracks are required to deselect any.",
         "help": "At least one track has to be selected.",
         "helpAtLeastOneVideo": "At least one video track has to be selected.",
         "atMostTwoVideos": "Track Selection is disabled for events with more than two videos",

@@ -53,6 +53,7 @@
         "comError-text": "Er is een probleem opgetreden tijdens de communicatie met Opencast.",
         "loadError-text": "Er is een fout opgetreden tijdens het laden van deze video.",
         "durationError-text": "Opencast failed to provide the video duration.",
+        "noVideoError-text": "The editor does not support audio files yet!",
         "title-tooltip": "Titel van de video",
         "presenter-tooltip": "Video presentatoren"
     },
@@ -232,7 +233,6 @@
         "deleteTrackTooltip": "Do not encode and publish this track.",
         "restoreTrackTooltip": "Encode and publish this track.",
         "cannotDeleteTrackTooltip": "Cannot remove this track from publication.",
-        "noSelectionPossible": "Track selection is disabled for this video, because at least two tracks are required to deselect any.",
         "help": "At least one track has to be selected.",
         "helpAtLeastOneVideo": "At least one video track has to be selected.",
         "atMostTwoVideos": "Track Selection is disabled for events with more than two videos",
